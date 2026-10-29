@@ -1,0 +1,22 @@
+{
+  "name": "@mimir/sdk",
+  "version": "0.1.0",
+  "description": "Developer SDK for Project Mimir - The Intent-Based Polyglot Serverless Mesh",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "serverless",
+    "mimir",
+    "wasm",
+    "polyglot"
+  ],
+  "author": "Mimir Systems",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

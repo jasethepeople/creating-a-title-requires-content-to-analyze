@@ -1,0 +1,66 @@
+graph TD
+    %% Define Styles
+    classDef edgeLayer fill:#f9f,stroke:#333,stroke-width:2px;
+    classDef controlLayer fill:#bbf,stroke:#333,stroke-width:2px;
+    classDef execLayer fill:#bfb,stroke:#333,stroke-width:2px;
+    classDef uiLayer fill:#fbb,stroke:#333,stroke-width:2px;
+    classDef external fill:#eee,stroke:#333,stroke-width:1px,stroke-dasharray: 5 5;
+
+    %% External Clients
+    Client[Client / IoT / Browser]:::external
+    Dev[Developer Workstation]:::external
+
+    %% Layer 1: Edge Proxy (Zig)
+    subgraph Layer1 ["Layer 1: Edge Proxy (Zig)"]
+        ZigProxy["Zig Custom Proxy<br>(QUIC / HTTP3)"]:::edgeLayer
+        TrafficRouting["Zero-Allocation Routing Table"]:::edgeLayer
+    end
+
+    %% Layer 2: Control Plane & Actor Mesh (Pony + Erlang)
+    subgraph Layer2 ["Layer 2: Control Plane (Pony + Erlang BEAM)"]
+        PonyMesh["Pony Actor Mesh<br>(Data-Race Free State)"]:::controlLayer
+        ErlangVM["Erlang OTP / BEAM<br>(Hot Code Swapping)"]:::controlLayer
+        CRDT["CRDT State Sync<br>(Sub-50ms Recovery)"]:::controlLayer
+        StateEngine["Gleam State Engine<br>(Formal Proofs)"]:::controlLayer
+    end
+
+    %% Layer 3: Execution & Scaling (Mojo + GraalVM/WASM)
+    subgraph Layer3 ["Layer 3: Execution & Scaling (Mojo + GraalVM/WASM)"]
+        MojoScaler["Mojo Autoscaler<br>(WebGPU ML Forecasting)"]:::execLayer
+        GraalVM["Polyglot Execution Container<br>(GraalVM JIT)"]:::execLayer
+        WasmRuntime["WASM Execution Sandbox<br>(wasmtime + Rust)"]:::execLayer
+    end
+
+    %% Layer 4: Frontend & Observability (Qwik, Astro, Babylon.js)
+    subgraph Layer4 ["Layer 4: Dashboard & UI"]
+        SaaSDashboard["SaaS Dashboard<br>(Qwik + Astro)"]:::uiLayer
+        Observability["3D Globe Observability<br>(Babylon.js + WebGL2)"]:::uiLayer
+    end
+
+    %% Connections
+    Client -->|Ingress Traffic| ZigProxy
+    Dev -->|mimir deploy / CLI| ZigProxy
+    Dev -->|Dashboard Access| SaaSDashboard
+    
+    ZigProxy --> TrafficRouting
+    TrafficRouting --> PonyMesh
+    
+    PonyMesh <--> ErlangVM
+    ErlangVM <--> CRDT
+    ErlangVM <--> StateEngine
+    
+    PonyMesh --> MojoScaler
+    MojoScaler -->|Predictive Scaling| GraalVM
+    MojoScaler -->|Predictive Scaling| WasmRuntime
+    
+    GraalVM -->|Metrics/Telemetry| Observability
+    WasmRuntime -->|Metrics/Telemetry| Observability
+    
+    %% Peer-to-Peer Fallback
+    subgraph P2PFallback ["P2P Discovery & Fallback"]
+        DHT["libp2p DHT Service Discovery"]
+        RaftConsensus["Crystal RAFT Consensus"]
+    end
+    
+    ZigProxy -.->|DDoS Fallback| DHT
+    DHT <--> RaftConsensus
